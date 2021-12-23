@@ -10,6 +10,7 @@
               <label for="senha">Senha</label>
               <input type="password" class="form-control" v-model="usuario.senha">
           </div>
+          <p class="alert alert-danger" v-if="mensagemErro">{{ mensagemErro }}</p>
           <button type="submit" class="btn btn-primary brn-block"> 
               Logar 
           </button>
@@ -27,18 +28,22 @@ export default {
         usuario: {
           email: '',
           senha: ''
-        }
+        },
+        mensagemErro: ''
     }
   },
   methods: {
     efetuarLogin () {
-        this.$http.post('http://localhost:8000/auth/login', this.usuario)
-             .then(response => {
-                 console.log(response)
-                 localStorage.setItem('token', response.data.access_token)
-                 this.$router.push({ name: 'gerentes' })
+        this.$store.dispatch('efetuarLogin', this.usuario)
+             .then(() => {
+                this.mensagemErro = ''
+                this.$router.push({ name: 'gerentes' })
              })
-             .catch(erro => console.log(erro))
+             .catch(err => {
+                if (err.request.status == 401) {
+                  this.mensagemErro = "Login ou senha inválido(s)!!!";
+                }
+              })
     }
   }
 }

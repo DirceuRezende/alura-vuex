@@ -23,6 +23,13 @@ export default {
     this.$http.get('gerentes')
       .then(response => this.gerentes = response.data)
       .catch(err => console.log(err))
+  },
+  beforeRouterEnter(to, from, next) {
+    if(!this.$store.state.token) {
+      console.log('não pode');
+      this.$router.push({ name: 'login' })
+    }
+    next()
   }
 }
 </script>

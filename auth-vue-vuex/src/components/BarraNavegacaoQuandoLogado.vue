@@ -18,14 +18,11 @@
 </template>
 
 <script>
+import { logoutMixins } from '@/mixins'
+
 export default {
-name: 'BarraNavegacaoQuandoLogado',
- methods: {
-    efetuarLogout() {
-        localStorage.removeItem('token')
-        this.$router.push({name: 'login'})
-    }
-  },
+  name: 'BarraNavegacaoQuandoLogado',
+  mixins: [logoutMixins]
 }
 </script>
 
